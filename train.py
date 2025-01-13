@@ -15,17 +15,17 @@ scoring = ['neg_' + m for m in metrics]
 
 models = {
     'linear_reg': LinearRegression(),
-    'mlp': MLPRegressor(hidden_layer_sizes=(500,), random_state=2, max_iter=200),
-    'svm': SVR(),
-    'd_tree': DecisionTreeRegressor(random_state=2),
-    'forest': RandomForestRegressor(n_estimators=100, criterion='squared_error', random_state=2),
+    'mlp': MLPRegressor(**{'activation': 'relu', 'hidden_layer_sizes': (200,), 'learning_rate': 'constant', 'max_iter': 100, 'solver': 'lbfgs'}),
+    'svm': SVR(**{'coef0': 0, 'degree': 2, 'gamma': 'scale', 'kernel': 'rbf', 'shrinking': False}),
+    'd_tree': DecisionTreeRegressor(**{'criterion': 'poisson', 'min_samples_leaf': 3, 'min_samples_split': 10, 'min_weight_fraction_leaf': 0.1, 'splitter': 'random'}),
+    'forest': RandomForestRegressor(**{'bootstrap': True, 'criterion': 'friedman_mse', 'max_samples': 0.4, 'min_samples_leaf': 8, 'min_weight_fraction_leaf': 0.1, 'n_estimators': 100}),
 }
 
 columns_result = ['model', 'fold', 'train_time'] + metrics
 data_result = {k: [] for k in columns_result}
 
 for model, regr in models.items():
-    folds = 10
+    folds = 5
     result = cross_validate(regr, X, y, cv=folds, scoring=scoring)
     for fold in range(folds):
         data_result['model'].append(model)
