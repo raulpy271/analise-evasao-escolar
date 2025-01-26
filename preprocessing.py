@@ -4,6 +4,7 @@ import pandas
 df_file = '/home/raul/Downloads/microdados_censo_da_educacao_superior_2023/dados/MICRODADOS_CADASTRO_CURSOS_2023.CSV'
 columns_all = [
     'TP_GRAU_ACADEMICO',
+    'TP_REDE',
     'CO_CINE_AREA_GERAL',
     'IN_GRATUITO',
     'QT_CURSO',
@@ -182,6 +183,7 @@ columns_all = [
 columns = columns_all.copy()
 columns.remove('QT_SIT_DESVINCULADO')
 columns.remove('CO_CINE_AREA_GERAL')
+columns.remove('TP_REDE')
 columns_to_remove_zeros = ['TP_GRAU_ACADEMICO', 'QT_VG_TOTAL', 'QT_MAT', 'QT_SIT_DESVINCULADO']
 
 if __name__ == '__main__':
@@ -200,5 +202,12 @@ if __name__ == '__main__':
     df = df[df['CO_CINE_AREA_GERAL'].isin([6])]
     print(df.shape)
 
-    df.to_csv('processed-dados.csv', sep=';', index=False, columns=columns + ['PERC_DESVINCULADO'], encoding='latin-1')
+    df_publico = df[df['TP_REDE'] == 1]
+    print("Publico", df_publico.shape)
+    df_privado = df[df['TP_REDE'] == 2]
+    print("Privado", df_privado.shape)
+
+    df.to_csv('dados/preprocessado.csv', sep=';', index=False, columns=columns + ['PERC_DESVINCULADO'], encoding='latin-1')
+    df_publico.to_csv('dados/preprocessado-publico.csv', sep=';', index=False, columns=columns + ['PERC_DESVINCULADO'], encoding='latin-1')
+    df_privado.to_csv('dados/preprocessado-privado.csv', sep=';', index=False, columns=columns + ['PERC_DESVINCULADO'], encoding='latin-1')
 
