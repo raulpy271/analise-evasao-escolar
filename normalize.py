@@ -1,10 +1,13 @@
 
+
+import matplotlib.pyplot as plt
 import pandas
 from sklearn.preprocessing import normalize
 
-ignore = set(['PERC_DESVINCULADO'])
+ignore = set(['TADA'])
 
-for filename in ['preprocessado', 'preprocessado-privado', 'preprocessado-publico']:
+
+for filename in ['preprocessado-indicadores', 'preprocessado-privado-indicadores', 'preprocessado-publico-indicadores']:
     df = pandas.read_csv(f'dados/{filename}.csv', sep=';', encoding='latin-1')
 
     for col, series in df.items():

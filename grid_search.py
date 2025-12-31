@@ -8,10 +8,9 @@ from sklearn.model_selection import cross_validate
 from sklearn.model_selection import GridSearchCV
 
 
-from preprocessing import columns
+df = pandas.read_csv('dados/normalizado-preprocessado-indicadores.csv', sep=';', encoding='latin-1')
+y, X = df['TADA'], df.drop('TADA', axis=1)
 
-df = pandas.read_csv('normalized-dados.csv', sep=';', encoding='latin-1')
-X, y = df[columns], df['PERC_DESVINCULADO']
 name = 'forest'
 regrs = {
     'svm': (SVR(), {
@@ -53,5 +52,5 @@ df = df.sort_values(by='rank_test_score')
 
 print(df)
 
-df.to_csv(f'grid-search-{name}.csv', sep=';', index=False)
+df.to_csv(f'resultados/grid-search-{name}.csv', sep=';', index=False)
 
