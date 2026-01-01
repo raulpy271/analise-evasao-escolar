@@ -8,15 +8,15 @@ from sklearn.tree import plot_tree
 
 from preprocessing import columns
 
-df = pandas.read_csv('dados/normalizado-preprocessado-publico.csv', sep=';', encoding='latin-1')
-X, y = df[columns], df['PERC_DESVINCULADO']
+df = pandas.read_csv('dados/normalizado-preprocessado-publico-indicadores.csv', sep=';', encoding='latin-1')
+y, X = df['TADA'], df.drop('TADA', axis=1)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
-regr = RandomForestRegressor(**{'bootstrap': True, 'criterion': 'friedman_mse', 'max_samples': 0.4, 'min_samples_leaf': 8, 'min_weight_fraction_leaf': 0.1, 'n_estimators': 100})
+regr = RandomForestRegressor(**{'bootstrap': True, 'criterion': 'squared_error', 'max_samples': 0.4, 'min_samples_leaf': 1, 'min_weight_fraction_leaf': 0.1, 'n_estimators': 100})
 regr = regr.fit(X_train, y_train)
 
-imp = pandas.Series(regr.feature_importances_, index=columns)
+imp = pandas.Series(regr.feature_importances_, index=X.columns)
 imp.sort_values(inplace=True)
 print(imp[-15:].values)
 print(imp[-15:].values.sum())
@@ -28,7 +28,7 @@ print('Features consideradas: ', imp[imp != 0].count())
 ax.set_title('MDI das 15 features mais importantes - Universidade pública')
 ax.set_ylabel("Mean Decrease Impurity")
 fig.tight_layout()
-fig.savefig('forest_importance_publico.png')
+fig.savefig('images/forest_importance_publico.png')
 
 #for i in sample(range(len(regr.estimators_)), k=5):
 #    fig, ax = plt.subplots(figsize=(20, 20))
