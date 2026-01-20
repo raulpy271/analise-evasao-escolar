@@ -6,6 +6,7 @@ columns_all = [
     'TP_GRAU_ACADEMICO',
     'TP_REDE',
     'CO_CINE_AREA_GERAL',
+    'CO_CURSO',
     'IN_GRATUITO',
     'QT_CURSO',
     'QT_VG_TOTAL',
@@ -182,9 +183,10 @@ columns_all = [
 ]
 columns = columns_all.copy()
 columns.remove('QT_SIT_DESVINCULADO')
+columns.remove('QT_SIT_TRANSFERIDO')
 columns.remove('CO_CINE_AREA_GERAL')
 columns.remove('TP_REDE')
-columns_to_remove_zeros = ['TP_GRAU_ACADEMICO', 'QT_VG_TOTAL', 'QT_MAT', 'QT_SIT_DESVINCULADO']
+columns_to_remove_zeros = ['TP_GRAU_ACADEMICO', 'QT_VG_TOTAL', 'QT_MAT']
 
 if __name__ == '__main__':
     df = pandas.read_csv(df_file, sep=';', usecols=columns_all, encoding='latin-1')
@@ -207,7 +209,11 @@ if __name__ == '__main__':
     df_privado = df[df['TP_REDE'] == 2]
     print("Privado", df_privado.shape)
 
-    df.to_csv('dados/preprocessado.csv', sep=';', index=False, columns=columns + ['PERC_DESVINCULADO'], encoding='latin-1')
-    df_publico.to_csv('dados/preprocessado-publico.csv', sep=';', index=False, columns=columns + ['PERC_DESVINCULADO'], encoding='latin-1')
-    df_privado.to_csv('dados/preprocessado-privado.csv', sep=';', index=False, columns=columns + ['PERC_DESVINCULADO'], encoding='latin-1')
+    #df.to_csv('dados/preprocessado.csv', sep=';', index=False, columns=columns + ['PERC_DESVINCULADO'], encoding='latin-1')
+    #df_publico.to_csv('dados/preprocessado-publico.csv', sep=';', index=False, columns=columns + ['PERC_DESVINCULADO'], encoding='latin-1')
+    #df_privado.to_csv('dados/preprocessado-privado.csv', sep=';', index=False, columns=columns + ['PERC_DESVINCULADO'], encoding='latin-1')
+
+    df.to_csv('dados/preprocessado.csv', sep=';', index=False, columns=columns, encoding='latin-1')
+    df_publico.to_csv('dados/preprocessado-publico.csv', sep=';', index=False, columns=columns, encoding='latin-1')
+    df_privado.to_csv('dados/preprocessado-privado.csv', sep=';', index=False, columns=columns, encoding='latin-1')
 
